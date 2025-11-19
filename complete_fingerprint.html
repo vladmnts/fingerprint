@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Fingerprint Collector</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .status {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        button {
+            background: #34C759;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        button:active {
+            background: #248a3d;
+        }
+        #progress {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Complete Browser Fingerprint</h1>
+        
+        <div id="status" class="status">
+            <div class="spinner"></div>
+            <p>Initializing comprehensive fingerprint collection...</p>
+            <div id="progress"></div>
+        </div>
+        
+        <button id="downloadBtn" style="display: none;">📥 Download Complete Fingerprint (JSON)</button>
+    </div>
+
+    <script>
+        let fingerprintData = null;
+        
+        // Update progress
+        function updateProgress(message) {
+            document.getElementById('progress').innerHTML = message;
+        }
+        
+        // Main fingerprint collection
+        async function collectCompleteFingerprint() {
+            updateProgress('Step 1/7: Collecting basic attributes...');
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            const fingerprint = {
+                perfectcanvas: {},
+                valid: true,
+                plugins: [],
+                mimes: [],
+                ua: navigator.userAgent,
+                tags: [],
+                dnt: navigator.doNotTrack,
+                width: screen.width,
+                height: screen.height,
+                canvas: '',
+                webgl: '',
+                audio: '',
+                fonts: [],
+                languages: navigator.languages || [navigator.language],
+                language: navigator.language,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                timezoneOffset: new Date().getTimezoneOffset(),
+                platform: navigator.platform,
+                vendor: navigator.vendor,
+                hardwareConcurrency: navigator.hardwareConcurrency || 0,
+                maxTouchPoints: navigator.maxTouchPoints || 0,
+                devicePixelRatio: window.devicePixelRatio || 1,
+                date: Date.now(),
+                screen: {
+                    width: screen.width,
+                    height: screen.height,
+                    availWidth: screen.availWidth,
+                    availHeight: screen.availHeight,
+                    colorDepth: screen.colorDepth,
+                    pixelDepth: screen.pixelDepth
+                },
+                attr: {
+                    'navigator.vendorSub': navigator.vendorSub || '',
+                    'navigator.productSub': navigator.productSub || '',
+                    'navigator.vendor': navigator.vendor || '',
+                    'navigator.appCodeName': navigator.appCodeName || '',
+                    'navigator.appName': navigator.appName || '',
+                    'navigator.appVersion': navigator.appVersion || '',
+                    'navigator.platform': navigator.platform || '',
+                    'navigator.product': navigator.product || '',
+                    'navigator.pdfViewerEnabled': navigator.pdfViewerEnabled ? 1 : 0,
+                    'navigator.userAgent': navigator.userAgent || '',
+                    'outerHeight': window.outerHeight,
+                    'outerWidth': window.outerWidth,
+                    'hardwareConcurrency': navigator.hardwareConcurrency || 0,
+                    'maxTouchPoints': navigator.maxTouchPoints || 0,
+                    'window.devicePixelRatio': window.devicePixelRatio || 1
+                }
+            };
+            
+            // Step 2: Multiple Canvas Tests
+            updateProgress('Step 2/7: Generating multiple canvas fingerprints...');
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Test 1: Simple canvas
+            const canvas1 = document.createElement('canvas');
+            canvas1.width = 300;
+            canvas1.height = 150;
+            const ctx1 = canvas1.getContext('2d');
+            ctx1.textBaseline = 'top';
+            ctx1.font = '14px Arial';
+            ctx1.fillStyle = '#f60';
+            ctx1.fillRect(125, 1, 62, 20);
+            ctx1.fillStyle = '#069';
+            ctx1.fillText('Canvas Fingerprint 🔍', 2, 15);
+            ctx1.fillStyle = 'rgba(102, 204, 0, 0.7)';
+            ctx1.fillText('Canvas Fingerprint 🔍', 4, 17);
+            const canvasData1 = canvas1.toDataURL();
+            fingerprint.canvas = canvasData1;
+            
+            // Generate hash and store
+            const hash1 = await hashString(canvasData1);
+            fingerprint.perfectcanvas[hash1] = canvasData1.replace('data:image/png;base64,', '');
+            
+            // Test 2: Larger canvas with more complex drawing
+            const canvas2 = document.createElement('canvas');
+            canvas2.width = 600;
+            canvas2.height = 300;
+            const ctx2 = canvas2.getContext('2d');
+            ctx2.fillStyle = 'rgb(255, 0, 0)';
+            ctx2.fillRect(0, 0, 600, 300);
+            ctx2.fillStyle = 'rgb(0, 255, 0)';
+            ctx2.fillRect(50, 50, 500, 200);
+            ctx2.fillStyle = 'rgb(0, 0, 255)';
+            ctx2.fillRect(100, 100, 400, 100);
+            for (let i = 0; i < 20; i++) {
+                ctx2.fillStyle = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+                ctx2.fillRect(Math.random() * 600, Math.random() * 300, 50, 50);
+            }
+            const canvasData2 = canvas2.toDataURL();
+            const hash2 = await hashString(canvasData2);
+            fingerprint.perfectcanvas[hash2] = canvasData2.replace('data:image/png;base64,', '');
+            
+            // Test 3: Text rendering with different fonts
+            const canvas3 = document.createElement('canvas');
+            canvas3.width = 400;
+            canvas3.height = 200;
+            const ctx3 = canvas3.getContext('2d');
+            const fonts = ['Arial', 'Verdana', 'Georgia', 'Times New Roman', 'Courier New'];
+            fonts.forEach((font, i) => {
+                ctx3.font = `${20 + i * 5}px ${font}`;
+                ctx3.fillStyle = `hsl(${i * 72}, 70%, 50%)`;
+                ctx3.fillText(`Test ${font}`, 10, 30 + i * 35);
+            });
+            const canvasData3 = canvas3.toDataURL();
+            const hash3 = await hashString(canvasData3);
+            fingerprint.perfectcanvas[hash3] = canvasData3.replace('data:image/png;base64,', '');
+            
+            // Step 3: WebGL
+            updateProgress('Step 3/7: Collecting WebGL information...');
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            try {
+                const webglCanvas = document.createElement('canvas');
+                const gl = webglCanvas.getContext('webgl') || webglCanvas.getContext('experimental-webgl');
+                
+                if (gl) {
+                    fingerprint.webgl = JSON.stringify({
+                        vendor: gl.getParameter(gl.VENDOR),
+                        renderer: gl.getParameter(gl.RENDERER),
+                        version: gl.getParameter(gl.VERSION),
+                        shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
+                        maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+                        maxViewportDims: Array.from(gl.getParameter(gl.MAX_VIEWPORT_DIMS))
+                    });
+                    
+                    fingerprint.webgl_properties = {
+                        vendor: gl.getParameter(gl.VENDOR),
+                        renderer: gl.getParameter(gl.RENDERER),
+                        version: gl.getParameter(gl.VERSION),
+                        shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
+                        extensions: gl.getSupportedExtensions() || []
+                    };
+                }
+            } catch (e) {
+                fingerprint.webgl = 'error';
+            }
+            
+            // Step 4: Audio Context
+            updateProgress('Step 4/7: Testing audio context...');
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    const audioCtx = new AudioContext();
+                    fingerprint.audio = JSON.stringify({
+                        sampleRate: audioCtx.sampleRate,
+                        state: audioCtx.state,
+                        maxChannelCount: audioCtx.destination.maxChannelCount
+                    });
+                    fingerprint.audio_properties = {
+                        sampleRate: audioCtx.sampleRate,
+                        state: audioCtx.state,
+                        maxChannelCount: audioCtx.destination.maxChannelCount
+                    };
+                    audioCtx.close();
+                }
+            } catch (e) {
+                fingerprint.audio = 'error';
+            }
+            
+            // Step 5: Fonts
+            updateProgress('Step 5/7: Detecting installed fonts...');
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            fingerprint.fonts = await detectFonts();
+            
+            // Step 6: Plugins
+            updateProgress('Step 6/7: Collecting plugin information...');
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            fingerprint.plugins = Array.from(navigator.plugins || []).map(p => ({
+                name: p.name,
+                description: p.description,
+                filename: p.filename,
+                length: p.length
+            }));
+            
+            // Step 7: Additional data
+            updateProgress('Step 7/7: Finalizing fingerprint...');
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Orientation
+            if (screen.orientation) {
+                fingerprint.orientation = {
+                    angle: screen.orientation.angle || 0,
+                    type: screen.orientation.type || ''
+                };
+            }
+            
+            // Touch support
+            fingerprint.touchSupport = {
+                maxTouchPoints: navigator.maxTouchPoints || 0,
+                touchEvent: 'ontouchstart' in window
+            };
+            
+            // System colors
+            fingerprint.systemcolors = getSystemColors();
+            
+            // Battery (if available)
+            if (navigator.getBattery) {
+                try {
+                    const battery = await navigator.getBattery();
+                    fingerprint.battery = JSON.stringify({
+                        charging: battery.charging,
+                        level: battery.level
+                    });
+                    fingerprint.has_battery_api = true;
+                } catch (e) {
+                    fingerprint.has_battery_api = false;
+                }
+            } else {
+                fingerprint.has_battery_api = false;
+            }
+            
+            return fingerprint;
+        }
+        
+        // Font detection
+        async function detectFonts() {
+            const baseFonts = ['monospace', 'sans-serif', 'serif'];
+            const testString = 'mmmmmmmmmmlli';
+            const testSize = '72px';
+            
+            const fontList = [
+                'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Georgia',
+                'Helvetica', 'Helvetica Neue', 'Impact', 'Times New Roman', 'Trebuchet MS',
+                'Verdana', 'Andale Mono', 'Courier', 'Garamond', 'Palatino', 'Tahoma',
+                'Geneva', 'Monaco', 'Lucida Console', 'Lucida Grande'
+            ];
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const baselines = {};
+            baseFonts.forEach(baseFont => {
+                ctx.font = testSize + ' ' + baseFont;
+                baselines[baseFont] = ctx.measureText(testString).width;
+            });
+            
+            const detectedFonts = [];
+            for (const font of fontList) {
+                let detected = false;
+                for (const baseFont of baseFonts) {
+                    ctx.font = testSize + ' "' + font + '", ' + baseFont;
+                    const width = ctx.measureText(testString).width;
+                    if (width !== baselines[baseFont]) {
+                        detected = true;
+                        break;
+                    }
+                }
+                if (detected) {
+                    detectedFonts.push(font);
+                }
+            }
+            
+            return detectedFonts;
+        }
+        
+        // System colors
+        function getSystemColors() {
+            const colors = {};
+            const colorNames = [
+                'ActiveBorder', 'ActiveCaption', 'ActiveText', 'AppWorkspace',
+                'Background', 'ButtonBorder', 'ButtonFace', 'ButtonHighlight',
+                'ButtonShadow', 'ButtonText', 'Canvas', 'CanvasText',
+                'CaptionText', 'Field', 'FieldText', 'GrayText',
+                'Highlight', 'HighlightText', 'InactiveBorder', 'InactiveCaption'
+            ];
+            
+            const div = document.createElement('div');
+            div.style.position = 'absolute';
+            div.style.left = '-9999px';
+            document.body.appendChild(div);
+            
+            colorNames.forEach(colorName => {
+                div.style.color = colorName;
+                const computed = window.getComputedStyle(div).color;
+                colors[colorName] = parseRGBA(computed);
+            });
+            
+            document.body.removeChild(div);
+            return colors;
+        }
+        
+        function parseRGBA(rgbaString) {
+            const match = rgbaString.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.?\d*))?\)/);
+            if (match) {
+                return [
+                    parseInt(match[1]),
+                    parseInt(match[2]),
+                    parseInt(match[3]),
+                    match[4] ? Math.round(parseFloat(match[4]) * 255) : 255
+                ];
+            }
+            return [0, 0, 0, 255];
+        }
+        
+        // Hash function
+        async function hashString(str) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            // Convert to numeric hash similar to original format
+            return parseInt(hashHex.substring(0, 10), 16).toString();
+        }
+        
+        // Download function
+        function downloadFingerprint() {
+            const dataStr = JSON.stringify(fingerprintData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `iphone_complete_fingerprint_${Date.now()}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Initialize
+        window.addEventListener('DOMContentLoaded', async function() {
+            try {
+                fingerprintData = await collectCompleteFingerprint();
+                
+                document.getElementById('status').innerHTML = `
+                    <div style="font-size: 4em; margin: 20px 0;">✓</div>
+                    <p style="font-size: 1.5em;">Complete Fingerprint Collected!</p>
+                    <p style="font-size: 0.9em; margin-top: 20px;">
+                        ${Object.keys(fingerprintData.perfectcanvas).length} canvas fingerprints generated<br>
+                        ${fingerprintData.fonts.length} fonts detected<br>
+                        File size: ~${Math.round(JSON.stringify(fingerprintData).length / 1024)} KB
+                    </p>
+                `;
+                
+                document.getElementById('downloadBtn').style.display = 'block';
+                document.getElementById('downloadBtn').onclick = downloadFingerprint;
+                
+            } catch (error) {
+                document.getElementById('status').innerHTML = `
+                    <p style="color: #ff6b6b;">Error: ${error.message}</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
